@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Pages;
 
-use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\AgreementResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\AgreementResource;
 
 class ViewAgreement extends ViewRecord
 {

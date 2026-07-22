@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes;
 
 use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\CreateAgreementType;
 use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\EditAgreementType;
 use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\ListAgreementTypes;
@@ -13,10 +17,6 @@ use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementType
 use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementTypeInfolist;
 use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Tables\AgreementTypesTable;
 use Rimba\Agreement\Models\AgreementType;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use UnitEnum;
 
 class AgreementTypeResource extends Resource

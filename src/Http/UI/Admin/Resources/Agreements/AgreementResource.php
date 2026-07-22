@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Rimba\Agreement\Http\UI\Admin\Resources\Agreements;
 
 use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Pages\CreateAgreement;
 use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Pages\EditAgreement;
 use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Pages\ListAgreements;
@@ -13,10 +17,6 @@ use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Schemas\AgreementForm;
 use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Schemas\AgreementInfolist;
 use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Tables\AgreementsTable;
 use Rimba\Agreement\Models\Agreement;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use UnitEnum;
 
 class AgreementResource extends Resource

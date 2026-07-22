@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Pages;
 
-use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\AgreementResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Rimba\Agreement\Http\UI\Admin\Resources\Agreements\AgreementResource;
 
 class ListAgreements extends ListRecords
 {

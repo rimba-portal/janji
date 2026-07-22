@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Rimba\Agreement\Http\UI\Admin\Resources\Parties;
 
 use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 use Rimba\Agreement\Http\UI\Admin\Resources\Parties\Pages\CreateParty;
 use Rimba\Agreement\Http\UI\Admin\Resources\Parties\Pages\EditParty;
 use Rimba\Agreement\Http\UI\Admin\Resources\Parties\Pages\ListParties;
 use Rimba\Agreement\Http\UI\Admin\Resources\Parties\Schemas\PartyForm;
 use Rimba\Agreement\Http\UI\Admin\Resources\Parties\Tables\PartiesTable;
 use Rimba\Agreement\Models\Party;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use UnitEnum;
 
 class PartyResource extends Resource
