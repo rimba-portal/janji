@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('expiry_notify_days')->default(30);
             $table->boolean('requires_approval')->default(false);
             $table->boolean('requires_signature')->default(false);
-            $table->foreignId('workflow_id')->nullable()->constrained();
+            $table->foreignId('workflow_instances')->nullable()->constrained();
             $table->json('meta')->nullable();
             $table->timestamps();
         });
