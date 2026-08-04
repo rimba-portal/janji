@@ -10,4 +10,6 @@ use Rimba\Agreement\Http\UI\Admin\Resources\Parties\PartyResource;
 class CreateParty extends CreateRecord
 {
     protected static string $resource = PartyResource::class;
+
+    // Custom
 }

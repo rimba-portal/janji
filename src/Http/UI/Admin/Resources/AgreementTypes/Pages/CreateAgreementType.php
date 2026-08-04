@@ -10,4 +10,6 @@ use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\AgreementTypeResource
 class CreateAgreementType extends CreateRecord
 {
     protected static string $resource = AgreementTypeResource::class;
+
+    // Custom
 }
