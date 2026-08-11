@@ -23,15 +23,15 @@ class AgreementResource extends Resource
 {
     protected static ?string $model = Agreement::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowSmallRight;
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Agreements';
+    protected static string|UnitEnum|null $navigationGroup = 'Agreement';
 
-    protected static ?string $navigationLabel = 'Agreement';
+    protected static ?string $navigationLabel = 'Agreements';
 
-    protected static ?int $navigationSort = 61;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

@@ -23,15 +23,15 @@ class AgreementTypeResource extends Resource
 {
     protected static ?string $model = AgreementType::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowSmallRight;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Agreements';
+    protected static string|UnitEnum|null $navigationGroup = 'Agreement';
 
-    protected static ?string $navigationLabel = 'Agreement Type';
+    protected static ?string $navigationLabel = 'Agreement Types';
 
-    protected static ?int $navigationSort = 62;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

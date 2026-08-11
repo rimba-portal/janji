@@ -21,15 +21,15 @@ class PartyResource extends Resource
 {
     protected static ?string $model = Party::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowSmallRight;
 
     protected static ?string $recordTitleAttribute = 'role';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Agreements';
+    protected static string|UnitEnum|null $navigationGroup = 'Agreement';
 
-    protected static ?string $navigationLabel = 'Party';
+    protected static ?string $navigationLabel = 'Parties';
 
-    protected static ?int $navigationSort = 63;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
