@@ -34,6 +34,8 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('agreement_type');
+            $table->foreignId('org_corp_id')->nullable()->constrained();
+            $table->foreignId('job_position_id')->nullable()->constrained();
             $table->string('contract_no')->nullable();
             $table->string('title');
             $table->text('summary')->nullable();

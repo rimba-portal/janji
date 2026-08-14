@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Models;
 
-use App\Trees\Organization\Models\OrgCorp;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Rimba\Organization\Models\OrgCorp;
+use Rimba\Position\Models\JobPosition;
 
 #[Fillable([
     'uuid',
     'agreement_type',
     'org_corp_id',
+    'job_position_id',
     'contract_no',
     'title',
     'summary',
@@ -48,11 +49,6 @@ class Agreement extends Model
         ];
     }
 
-    public function agreementable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
     public function parties(): HasMany
     {
         return $this->hasMany(Party::class);
@@ -66,5 +62,10 @@ class Agreement extends Model
     public function orgCorp(): BelongsTo
     {
         return $this->belongsTo(OrgCorp::class);
+    }
+
+    public function jobPosition(): BelongsTo
+    {
+        return $this->belongsTo(JobPosition::class);
     }
 }
