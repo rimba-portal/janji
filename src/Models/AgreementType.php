@@ -5,31 +5,25 @@ declare(strict_types=1);
 namespace Rimba\Agreement\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'uuid',
-    'name',
     'code',
-    'description',
-    'template',
-    'public_schema',
-    'confidential_schema',
-    'notify',
-    'expiry_notify_days',
-    'requires_approval',
-    'requires_signature',
-    'workflow_id',
-    'meta',
+    'name',
+    'party_a_type',
+    'party_b_type',
+    'scopeable_type',
+    'scopeable_relation',
+    'settings',
 ])]
+#[Table(name: 'agreement_types')]
 class AgreementType extends Model
 {
-    use HasFactory;
-
     /**
      * Get the attributes that should be cast.
+     * Ensures configuration arrays are parsed cleanly by the engine.
      *
      * @return array<string, string>
      */
@@ -37,18 +31,24 @@ class AgreementType extends Model
     {
         return [
             'id' => 'integer',
-            'public_schema' => 'array',
-            'confidential_schema' => 'array',
-            'notify' => 'array',
-            'requires_approval' => 'boolean',
-            'requires_signature' => 'boolean',
-            'workflow_id' => 'integer',
-            'meta' => 'array',
+            'settings' => 'array',
         ];
     }
 
+    /**
+     * Get all agreements generated under this validation rule profile.
+     */
     public function agreements(): HasMany
     {
-        return $this->hasMany(Agreement::class);
+        return $this->hasMany(Agreement::class, 'agreement_type_id');
+    }
+
+    /**
+     * Multiplicity Check: Verifies if this rule type allows
+     * multiple physical targets inside the scope ledger.
+     */
+    public function allowsMultipleScopes(): bool
+    {
+        return ($this->scopeable_relation ?? 'one') === 'many';
     }
 }

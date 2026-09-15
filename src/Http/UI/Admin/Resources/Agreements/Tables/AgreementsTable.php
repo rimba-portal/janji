@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Http\UI\Admin\Resources\Agreements\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class AgreementsTable
@@ -18,45 +15,38 @@ class AgreementsTable
         return $table
             ->columns([
                 TextColumn::make('uuid')
-                    ->label('UUID')
+                    ->label('Contract No')
                     ->searchable(),
-                TextColumn::make('agreement_type')
-                    ->searchable(),
-                TextColumn::make('contract_no')
-                    ->searchable(),
+
+                TextColumn::make('type.name')
+                    ->label('Contract Classification')
+                    ->sortable(),
+
                 TextColumn::make('title')
                     ->searchable(),
+
+                TextColumn::make('status')
+                    ->badge()
+                    ->colors([
+                        'gray' => 'Draft',
+                        'info' => 'Approved',
+                        'success' => 'Active',
+                        'danger' => 'Archive',
+                    ]),
+
                 TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
-                TextColumn::make('end_date')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('renewal_date')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('scopes_count')
+                    ->label('Items Scoped')
+                    ->counts('scopes')
+                    ->badge(),
             ])
             ->filters([
-                //
-            ])
-            ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                SelectFilter::make('agreement_type_id')
+                    ->label('Contract Type')
+                    ->relationship('type', 'name'),
             ]);
     }
 }

@@ -4,13 +4,47 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+#[Fillable([
+    'uuid',
+    'agreement_type_id',
+    'title',
+    'description',
+    'start_date',
+    'end_date',
+    'status',
+    'party_a_type',
+    'party_a_id',
+    'party_b_type',
+    'party_b_id',
+    'attributes',
+])]
+#[Table(name: 'agreements')]
 class Agreement extends Model
 {
+    /**
+     * Get the attributes that should be cast.
+     * Ensures dates and settings arrays are hydrated properly by the framework.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'agreement_type_id' => 'integer',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'attributes' => 'array',
+        ];
+    }
+
     public function type(): BelongsTo
     {
         return $this->belongsTo(AgreementType::class, 'agreement_type_id');
