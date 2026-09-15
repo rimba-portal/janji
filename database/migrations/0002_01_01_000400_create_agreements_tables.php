@@ -41,7 +41,7 @@ return new class extends Migration
 
             // Polymorphic pairs match against the type columns in agreement_types
             $table->numericMorphs('party_a');
-            $table->numericMorphs('party_b');
+            $table->nullableNumericMorphs('party_b');
 
             $table->json('attributes')->nullable();
             $table->timestamps();
