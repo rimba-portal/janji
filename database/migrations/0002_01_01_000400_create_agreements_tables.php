@@ -15,50 +15,51 @@ return new class extends Migration
 
         Schema::create('agreement_types', function (Blueprint $table): void {
             $table->id();
-            $table->uuid('uuid')->unique();
+            $table->string('code')->unique(); // e.g., 'job_contract', 'maintenance_contract'
             $table->string('name');
-            $table->string('code')->unique();
-            $table->text('description')->nullable();
-            $table->longText('template')->nullable();
-            $table->json('public_schema')->nullable();
-            $table->json('confidential_schema')->nullable();
-            $table->json('notify')->nullable();
-            $table->integer('expiry_notify_days')->default(30);
-            $table->boolean('requires_approval')->default(false);
-            $table->boolean('requires_signature')->default(false);
-            $table->foreignId('workflow_instances')->nullable()->constrained();
-            $table->json('meta')->nullable();
+
+            // Model Validation Rules (stores fully qualified class strings like Rimba\People\Models\Staff)
+            $table->string('party_a_type');
+            $table->string('party_b_type');
+            $table->string('scopeable_type');
+
+            // Multiplicity Control
+            $table->string('scopeable_relation')->default('one'); // 'one' or 'many'
+
+            $table->json('settings')->nullable();
             $table->timestamps();
         });
         Schema::create('agreements', function (Blueprint $table): void {
             $table->id();
-            $table->uuid('uuid')->unique();
-            $table->string('agreement_type');
-            $table->foreignId('org_corp_id')->nullable()->constrained();
-            $table->foreignId('job_position_id')->nullable()->constrained();
-            $table->string('contract_no')->nullable();
+            $table->string('uuid')->unique();
+            $table->foreignId('agreement_type_id')->constrained('agreement_types');
             $table->string('title');
-            $table->text('summary')->nullable();
+            $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->date('renewal_date')->nullable();
-            $table->enum('status', ['draft', 'pending', 'active', 'expired', 'terminated', 'archived'])->default('draft');
-            $table->json('terms')->nullable();
-            $table->json('meta')->nullable();
-            // $table->morphs('contractable');
-            $table->timestamps();
-        });
-        Schema::create('parties', function (Blueprint $table): void {
-            $table->id();
-            $table->foreignId('agreement_id')->constrained('agreements');
-            $table->string('role')->nullable();
-            $table->boolean('is_signatory')->default(false);
-            $table->boolean('notify_on_expiry')->default(true);
-            $table->json('meta')->nullable();
-            $table->morphs('party');
-            $table->timestamps();
-        });
+            $table->string('status')->default('Draft');
 
+            // Polymorphic pairs match against the type columns in agreement_types
+            $table->numericMorphs('party_a');
+            $table->numericMorphs('party_b');
+
+            $table->json('attributes')->nullable();
+            $table->timestamps();
+        });
+        Schema::create('agreement_scopes', function (Blueprint $table): void {
+            $table->id();
+
+            // Link to the parent agreement
+            $table->foreignId('agreement_id')
+                ->constrained('agreements')
+                ->cascadeOnDelete();
+
+            // The Polymorphic pair: scopeable_type and scopeable_id
+            // This allows linking to JobPosition, Asset, Staff, etc.
+            $table->numericMorphs('scopeable');
+
+            $table->timestamps();
+        });
         Schema::enableForeignKeyConstraints();
     }
 
@@ -67,8 +68,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contract_parties');
-        Schema::dropIfExists('contracts');
-        Schema::dropIfExists('contract_types');
+        Schema::dropIfExists('agreement_scopes');
+        Schema::dropIfExists('agreements');
+        Schema::dropIfExists('agreement_types');
     }
 };

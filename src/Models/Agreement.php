@@ -4,68 +4,52 @@ declare(strict_types=1);
 
 namespace Rimba\Agreement\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Rimba\Organization\Models\OrgCorp;
-use Rimba\Position\Models\JobPosition;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-#[Fillable([
-    'uuid',
-    'agreement_type',
-    'org_corp_id',
-    'job_position_id',
-    'contract_no',
-    'title',
-    'summary',
-    'start_date',
-    'end_date',
-    'renewal_date',
-    'status',
-    'terms',
-    'meta',
-])]
 class Agreement extends Model
 {
-    use HasFactory;
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(AgreementType::class, 'agreement_type_id');
+    }
+
+    public function partyA(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function partyB(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function scopes(): HasMany
+    {
+        return $this->hasMany(AgreementScope::class);
+    }
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Framework Validation Guard Hook
+     * Prevents saving if the assigned targets violate the metadata engine rules.
      */
-    protected function casts(): array
+    protected static function booted()
     {
-        return [
-            'id' => 'integer',
-            'org_corp_id' => 'integer',
-            'start_date' => 'date',
-            'end_date' => 'date',
-            'renewal_date' => 'date',
-            'terms' => 'array',
-            'meta' => 'array',
-        ];
-    }
+        static::saving(function (Agreement $agreement): void {
+            $rules = $agreement->type;
+            if (! $rules) {
+                return;
+            }
 
-    public function parties(): HasMany
-    {
-        return $this->hasMany(Party::class);
-    }
+            if ($agreement->party_a_type !== $rules->party_a_type) {
+                throw new \InvalidArgumentException("Party A must be an instance of {$rules->party_a_type}");
+            }
 
-    public function agreementType(): BelongsTo
-    {
-        return $this->belongsTo(AgreementType::class);
-    }
-
-    public function orgCorp(): BelongsTo
-    {
-        return $this->belongsTo(OrgCorp::class);
-    }
-
-    public function jobPosition(): BelongsTo
-    {
-        return $this->belongsTo(JobPosition::class);
+            if ($agreement->party_b_type !== $rules->party_b_type) {
+                throw new \InvalidArgumentException("Party B must be an instance of {$rules->party_b_type}");
+            }
+        });
     }
 }
