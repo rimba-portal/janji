@@ -65,6 +65,14 @@ class Agreement extends Model
         return $this->hasMany(AgreementScope::class);
     }
 
+    public function jobPosition(): ?JobPosition
+    {
+        return $this->scopes()
+            ->where('scopeable_type', JobPosition::class)
+            ->first()
+            ?->scopeable;
+    }
+
     /**
      * Framework Validation Guard Hook
      * Prevents saving if the assigned targets violate the metadata engine rules.
