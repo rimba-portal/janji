@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rimba\Agreement\Http\UI\Admin\Resources\AgreementScopes\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementScopes\AgreementScopeResource;
 
 class ListAgreementScopes extends ListRecords
 {
-    protected static string $resource = \Rimba\Agreement\Http\UI\Admin\Resources\AgreementScopes\AgreementScopeResource::class;
+    protected static string $resource = AgreementScopeResource::class;
 
     protected static ?string $title = 'Agreement Scopes';
 

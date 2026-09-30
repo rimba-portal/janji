@@ -1,17 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes;
 
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\CreateAgreementType;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\EditAgreementType;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\ListAgreementTypes;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\ViewAgreementType;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementTypeForm;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementTypeInfolist;
+use Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Tables\AgreementTypesTable;
+use Rimba\Agreement\Models\AgreementType;
+use UnitEnum;
 
 class AgreementTypeResource extends Resource
 {
-    protected static ?string $model = \Rimba\Agreement\Models\AgreementType::class;
+    protected static ?string $model = AgreementType::class;
 
     protected static string|UnitEnum|null $navigationGroup = 'Agreement';
 
@@ -21,26 +30,35 @@ class AgreementTypeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function form(Schema $schema): Schema { return \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementTypeForm::configure($schema); }
+    public static function form(Schema $schema): Schema
+    {
+        return AgreementTypeForm::configure($schema);
+    }
 
-    public static function infolist(Schema $schema): Schema { return \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Schemas\AgreementTypeInfolist::configure($schema); }
+    public static function infolist(Schema $schema): Schema
+    {
+        return AgreementTypeInfolist::configure($schema);
+    }
 
-    public static function table(Table $table): Table { return \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Tables\AgreementTypesTable::configure($table); }
+    public static function table(Table $table): Table
+    {
+        return AgreementTypesTable::configure($table);
+    }
 
-    public static function getRelations(): array 
-    { 
-        return [ 
-            // 
+    public static function getRelations(): array
+    {
+        return [
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\ListAgreementTypes::route('/'),
-             'create' => \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\CreateAgreementType::route('/create'),
-             'view' => \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\ViewAgreementType::route('/{record}'),
-             'edit' => \Rimba\Agreement\Http\UI\Admin\Resources\AgreementTypes\Pages\EditAgreementType::route('/{record}/edit'),
+            'index' => ListAgreementTypes::route('/'),
+            'create' => CreateAgreementType::route('/create'),
+            'view' => ViewAgreementType::route('/{record}'),
+            'edit' => EditAgreementType::route('/{record}/edit'),
             //
         ];
     }
