@@ -25,7 +25,6 @@ class AgreementsRelationManager extends RelationManager
             )
             ->columns([
                 TextColumn::make('title')
-                    ->searchable()
                     ->wrap(),
                 TextColumn::make('party_a')
                     ->label('Party A')
