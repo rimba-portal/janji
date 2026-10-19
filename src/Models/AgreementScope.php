@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace Rimba\Agreement\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Rimba\Agreement\Observers\AgreementScopeObserver;
 
 #[Fillable([
     'agreement_id',
     'scopeable_type',
     'scopeable_id',
 ])]
+#[ObservedBy([AgreementScopeObserver::class])]
 class AgreementScope extends Model
 {
     use HasFactory;
