@@ -24,20 +24,32 @@ class AgreementsRelationManager extends RelationManager
                 fn (): Builder => $this->getOwnerRecord()->agreementsQuery()
             )
             ->columns([
-                TextColumn::make('uuid')
-                    ->label('Agreement No.')
-                    ->searchable()
-                    ->copyable(),
-
-                TextColumn::make('type.name')
-                    ->label('Type')
-                    ->badge()
-                    ->sortable(),
-
                 TextColumn::make('title')
                     ->searchable()
                     ->wrap(),
+                TextColumn::make('party_a')
+                    ->label('Party A')
+                    ->state(
+                        fn (Agreement $record): string => $this->modelLabel($record->partyA)
+                    ),
 
+                TextColumn::make('party_b')
+                    ->label('Party B')
+                    ->state(
+                        fn (Agreement $record): string => $this->modelLabel($record->partyB)
+                    ),
+
+                TextColumn::make('scopes')
+                    ->label('Scope')
+                    ->state(
+                        fn (Agreement $record): string => $record->scopes
+                            ->map(
+                                fn ($scope): string => $this->modelLabel($scope->scopeable)
+                            )
+                            ->filter()
+                            ->implode(', ') ?: '-'
+                    )
+                    ->wrap(),
                 TextColumn::make('role')
                     ->label('Involvement')
                     ->state(
@@ -91,6 +103,7 @@ class AgreementsRelationManager extends RelationManager
                     ->label('End')
                     ->date()
                     ->sortable(),
+
             ])
             ->recordActions([
                 Action::make('view')
@@ -104,5 +117,22 @@ class AgreementsRelationManager extends RelationManager
                     ),
             ])
             ->defaultSort('start_date', 'desc');
+    }
+
+    protected function modelLabel(?object $model): string
+    {
+        if (! $model) {
+            return '-';
+        }
+
+        foreach (['name', 'title', 'label', 'code', 'staff_no', 'uuid'] as $attribute) {
+            $value = $model->getAttribute($attribute);
+
+            if (filled($value)) {
+                return (string) $value;
+            }
+        }
+
+        return class_basename($model).' #'.$model->getKey();
     }
 }
